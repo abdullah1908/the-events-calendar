@@ -135,13 +135,29 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 		$event_tz = get_post_meta( $event->ID, '_EventTimezone', true );
 		$site_tz  = self::wp_timezone_string();
 
+global $TEST;
+
+if ( $TEST && $type == 'Start' ) {
+	write_log( self::mode(), 'mode' );
+}
 		if ( null === $timezone ) {
 			$timezone = self::mode();
 		}
 
+if ( $TEST && $type == 'Start') {
+	write_log( $timezone, 'timezone' );
+}
+
 		// Should we use the event specific timezone or the site-wide timezone?
 		$use_event_tz = self::EVENT_TIMEZONE === $timezone;
 		$use_site_tz  = self::SITE_TIMEZONE === $timezone;
+
+if ( $TEST && $type == 'Start' ) {
+	write_log( $event_tz, 'theEventTZ' );
+	write_log( $site_tz, 'theSiteTZ' );
+	write_log( $use_event_tz, 'useEventTZ' );
+	write_log( $use_site_tz, 'useSiteTZ' );
+}
 
 		// Determine if the event timezone and site timezone the same *or* if the event does not have timezone
 		// information (in which case, we'll assume the event time inherits the site timezone)
@@ -151,6 +167,9 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 		if ( $use_event_tz || ( $use_site_tz && $site_zone_is_event_zone ) ) {
 			$datetime = get_post_meta( $event->ID, "_Event{$type}Date", true );
 
+if ( $TEST && $type == 'Start' ) {
+	write_log( $datetime, 'datetime' );
+}
 			return strtotime( $datetime );
 		}
 
@@ -164,6 +183,9 @@ class Tribe__Events__Timezones extends Tribe__Timezones {
 			: $timezone;
 
 		$localized = self::to_tz( $datetime, $tzstring );
+
+		write_log( $tzstring, 'TZSTRING' );
+		write_log( $localized, 'localized!' );
 		return strtotime( $localized );
 	}
 
