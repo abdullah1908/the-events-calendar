@@ -909,8 +909,8 @@ class Tribe__Events__Linked_Posts {
 			$data = array_values( (array) $options );
 		}
 
-		$user_can_create         = ( ! empty( $post_type_object->cap->create_posts ) && current_user_can( $post_type_object->cap->create_posts ) );
-		$allowed_creation        = ( ! empty( $this->linked_post_types[ $post_type ]['allow_creation'] ) && $this->linked_post_types[ $post_type ]['allow_creation'] );
+		$user_can_create  = ( ! empty( $post_type_object->cap->create_posts ) && current_user_can( $post_type_object->cap->create_posts ) );
+		$allowed_creation = ( ! empty( $this->linked_post_types[ $post_type ]['allow_creation'] ) && $this->linked_post_types[ $post_type ]['allow_creation'] );
 
 		/**
 		 * Controls whether the UI to create new linked posts should be displayed.
@@ -934,6 +934,8 @@ class Tribe__Events__Linked_Posts {
 				id="saved_' . esc_attr( $post_type ) . '"
 				data-placeholder="' . $label . '"
 				data-search-placeholder="' . $label . '" ' .
+				'data-input-group="'. esc_attr( $post_type ) .'"' .
+				( Tribe__Events__Organizer::POSTTYPE === $post_type ? 'data-one-per-group ' : '' ) .
 				( $creation_enabled ?
 				'data-freeform
 				data-sticky-search
